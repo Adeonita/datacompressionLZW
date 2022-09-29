@@ -1,33 +1,59 @@
-import os.path
+import string
 
-def generatedict():
+def generateAscDict():
     dict = {}
 
-    for x in range(33, 127):
+    for x in range(1, 256):
         character = chr(x)
-        dict.update({x : character})
+        dict.update({character: x })
 
-    for x in range(161, 246):
-        character = chr(x)
-        
-        dict.update({x : character})
-    
     return dict
 
+def addInDict(value: str, dictAsc: dict):
+    lastKey = list(dictAsc.values())[-1]
+    nextKey = lastKey + 1
+    dictAsc.update({value : nextKey})
+
+    return dictAsc
+
 def writeInDict(filePath, text):
-   with open(filePath, 'w') as file:
-    file.write(text)
-
-dictasc = generatedict()
-
-filePath = 'files/asc.txt'
-
-if (not os.path.exists(filePath)):
-    print("file not found")
-
-
-with open(filePath, 'a') as file:
-    for key, value in dictasc.items():
-        text  = str(key )+ ':' + value
+    with open(filePath, 'w') as file:
         file.write(text)
-        file.write('\n')
+
+def hasSequence(dict: dict, value: str):
+    hasValue = dict.get(value)
+    
+    return bool(hasValue)
+
+def getCodeByKey(dict: dict, key: string):
+    return dict.get(key)
+
+def readFile():
+    with open('files/ed2test.txt', 'r', encoding='utf-8-sig') as file:
+        return file.read()
+
+def enconding():
+    dictAsc = generateAscDict()
+    
+    with open('files/ed2test.txt', 'r', encoding='utf-8-sig') as file:
+        firstSymbol = ''
+        encondingSequence = []
+        
+        while True:
+            ch = file.read(1)
+            if not ch:
+                break
+            seq = firstSymbol + ch
+
+            if hasSequence(dictAsc, seq):
+                firstSymbol = seq
+            else:
+                encondingSequence.append(getCodeByKey(dictAsc, firstSymbol))
+                addInDict(seq, dictAsc)
+                firstSymbol = ch
+    
+    encondingSequence.append(getCodeByKey(dictAsc, firstSymbol))
+    print(encondingSequence)
+
+
+enconding()
