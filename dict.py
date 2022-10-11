@@ -1,6 +1,4 @@
 from array import array
-from base64 import decode
-from re import S
 import string
 import json
 
@@ -82,31 +80,20 @@ def sanitizeAscTable(ascTable: string):
     #substituir as aspas simples pela aspas duplas, e escapar o caractere com contra barra se ele for aspas
 
     sqc = ""
-
+    # Os caracteres aspas simples e aspas duplas estão dando problema ascCode 39 e 34
     for x in ascTable:
-        #Escape de contra barra
-        # if x == "\\":
-        #     a = x.replace(x, "\\\\")
-        #     sqc = sqc + a
-        # else:
-        #     sqc = sqc + x
         
-        #Escape de aspas
         if x == '"':
-            a = x.replace(x, '\"')
-            sqc = sqc + a
-        if x == "'":
-            a = x.replace(x, '\"')
-            sqc = sqc + a
-        # if x == "\\":
-        #     a = x.replace(x, "\\\\")
-        #     sqc = sqc + a
+            sqc = sqc + '\\"'
+        elif x == "'": 
+            sqc = sqc + '"'
+        elif x == '\\':
+            sqc = sqc + '\\\\'
         else:
             sqc = sqc + x
             
     return sqc 
 
-   
 
 def recoveryDictAndEncodingSequence():
     encondingSequence: array = None
@@ -130,11 +117,13 @@ def recoveryDictAndEncodingSequence():
                 count = count + 1
 
     encondingSequence = sanitizeEncodingSequence(encondingSequence)
-    # ascTable = sanitizeAscTable(ascLine)
+    ascTable = sanitizeAscTable(ascLine)
+    print (ascTable)
     # exit()
     # ascTable = json.loads(ascLine) #resolver problema de caracateres que possuem escape
-    ascTable = json.loads(ascTable.replace()) #resolver problema de caracateres que possuem escape
+    ascTable = json.loads(ascTable) #resolver problema de caracateres que possuem escape
 
+    # print(ascTable)
     return encondingSequence, ascTable
 
 
