@@ -1,0 +1,2 @@
+﻿Esse é um arquivo de texto, utilizado para realizar a demonstração 
+da compressão de um arquivo, utilizando o algoritmo LWZ
