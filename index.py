@@ -1,9 +1,8 @@
-filename = 'files/ed2test.txt'
+from LZW import LZW
 
-with open(filename) as f:
-  while True:
-    c = f.read(1)
-    if not c:
-      print ("End of file")
-      break
-    print ("Read a character:", c)
+filePath = './files/file.txt'
+encodedSequencePath = './files/encodedSequence.txt'
+decodedSequencePath = './files/decodedSequence.txt'
+
+LZW().encode(filePath, encodedSequencePath)
+LZW().decode(decodedSequencePath, encodedSequencePath)
